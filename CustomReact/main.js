@@ -3,6 +3,8 @@ function customRender(element, container) {
   domElement.innerHTML = element.children;
 
   for (const [key, value] of Object.entries(element.props)) {
+    if (key === "children") continue;
+
     domElement.setAttribute(key, value);
   }
 
