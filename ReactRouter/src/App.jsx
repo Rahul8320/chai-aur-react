@@ -1,9 +1,13 @@
+import { Outlet } from "react-router-dom";
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
+
 function App() {
   return (
     <>
-      <h1 className="bg-green-300 text-4xl text-center">
-        React Router Project
-      </h1>
+      <Header />
+      <Outlet />
+      <Footer />
     </>
   );
 }
