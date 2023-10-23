@@ -4,11 +4,13 @@ import { TodoForm, TodoItem } from "./components";
 
 function App() {
   const [todos, setTodos] = useState([]);
+  const [expanded, setExpanded] = useState(true);
+  const [completedTodoCount, setCompletedTodoCount] = useState(0);
 
   const addTodo = (todo) => {
     setTodos((prev) => [
-      ...prev,
       { id: Date.now(), todo: todo, completed: false },
+      ...prev,
     ]);
   };
 
@@ -17,7 +19,11 @@ function App() {
   };
 
   const deleteTodo = (id) => {
-    setTodos((prev) => prev.filter((item) => item.id !== id));
+    const result = confirm(
+      "Are you sure you want to delete this todo permanently?"
+    );
+    result === true &&
+      setTodos((prev) => prev.filter((item) => item.id !== id));
   };
 
   const toggleComplete = (id) => {
@@ -33,11 +39,25 @@ function App() {
 
     if (todos && todos.length > 0) {
       setTodos(todos);
+
+      const completedTodos = todos.reduce(
+        (acc, item) => (item.completed === true ? (acc += 1) : acc),
+        0
+      );
+      setCompletedTodoCount(completedTodos);
+      completedTodos >= 3 && setExpanded(false);
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
+
+    const completedTodos = todos.reduce(
+      (acc, item) => (item.completed === true ? (acc += 1) : acc),
+      0
+    );
+    setCompletedTodoCount(completedTodos);
+    completedTodos >= 3 && setExpanded(false);
   }, [todos]);
 
   return (
@@ -55,9 +75,41 @@ function App() {
           </div>
           <div className="flex flex-wrap gap-y-3">
             {/*Loop and Add TodoItem here */}
+            <p className="text-gray-300 px-3">
+              🔆 My Day{" "}
+              {todos.reduce(
+                (acc, item) => (item.completed === false ? (acc += 1) : acc),
+                0
+              )}
+            </p>
             {todos &&
-              todos.map((item) => <TodoItem todo={item} key={item.id} />)}
+              todos.map(
+                (item) =>
+                  item.completed === false && (
+                    <TodoItem todo={item} key={item.id} />
+                  )
+              )}
           </div>
+          {/* completed todos */}
+          {completedTodoCount !== 0 && (
+            <div className="flex flex-wrap gap-y-3 mt-5">
+              {/*Loop completed todo here */}
+              <button
+                onClick={() => setExpanded((prev) => !prev)}
+                className="text-gray-300 outline-none py-1 px-3 hover:bg-slate-700 rounded-md"
+              >
+                {expanded ? "👇" : "👉"} Completed {completedTodoCount}
+              </button>
+              {todos &&
+                expanded &&
+                todos.map(
+                  (item) =>
+                    item.completed === true && (
+                      <TodoItem todo={item} key={item.id} />
+                    )
+                )}
+            </div>
+          )}
         </div>
       </div>
     </TodoProvider>
