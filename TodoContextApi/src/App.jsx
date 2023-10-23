@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { TodoProvider } from "./contexts/TodoContext";
-import { TodoForm, TodoItem } from "./components";
+import { CompletedTodoList, TodoForm, TodoList } from "./components";
 
 function App() {
   const [todos, setTodos] = useState([]);
-  const [expanded, setExpanded] = useState(true);
-  const [completedTodoCount, setCompletedTodoCount] = useState(0);
 
   const addTodo = (todo) => {
     setTodos((prev) => [
@@ -34,35 +32,32 @@ function App() {
     );
   };
 
+  const completedTodoCount = () => {
+    return todos.filter((item) => item.completed).length;
+  };
+
   useEffect(() => {
     const todos = JSON.parse(localStorage.getItem("todos"));
 
     if (todos && todos.length > 0) {
       setTodos(todos);
-
-      const completedTodos = todos.reduce(
-        (acc, item) => (item.completed === true ? (acc += 1) : acc),
-        0
-      );
-      setCompletedTodoCount(completedTodos);
-      completedTodos >= 3 && setExpanded(false);
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
-
-    const completedTodos = todos.reduce(
-      (acc, item) => (item.completed === true ? (acc += 1) : acc),
-      0
-    );
-    setCompletedTodoCount(completedTodos);
-    completedTodos >= 3 && setExpanded(false);
   }, [todos]);
 
   return (
     <TodoProvider
-      value={{ todos, addTodo, updateTodo, deleteTodo, toggleComplete }}
+      value={{
+        todos,
+        addTodo,
+        updateTodo,
+        deleteTodo,
+        toggleComplete,
+        completedTodoCount,
+      }}
     >
       <div className="bg-[#172842] min-h-screen py-8">
         <div className="w-full max-w-2xl mx-auto shadow-md rounded-lg px-4 py-3 text-white">
@@ -73,43 +68,12 @@ function App() {
             {/* Todo form goes here */}
             <TodoForm />
           </div>
-          <div className="flex flex-wrap gap-y-3">
-            {/*Loop and Add TodoItem here */}
-            <p className="text-gray-300 px-3">
-              🔆 My Day{" "}
-              {todos.reduce(
-                (acc, item) => (item.completed === false ? (acc += 1) : acc),
-                0
-              )}
-            </p>
-            {todos &&
-              todos.map(
-                (item) =>
-                  item.completed === false && (
-                    <TodoItem todo={item} key={item.id} />
-                  )
-              )}
-          </div>
-          {/* completed todos */}
-          {completedTodoCount !== 0 && (
-            <div className="flex flex-wrap gap-y-3 mt-5">
-              {/*Loop completed todo here */}
-              <button
-                onClick={() => setExpanded((prev) => !prev)}
-                className="text-gray-300 outline-none py-1 px-3 hover:bg-slate-700 rounded-md"
-              >
-                {expanded ? "👇" : "👉"} Completed {completedTodoCount}
-              </button>
-              {todos &&
-                expanded &&
-                todos.map(
-                  (item) =>
-                    item.completed === true && (
-                      <TodoItem todo={item} key={item.id} />
-                    )
-                )}
-            </div>
-          )}
+
+          {/* List all incomplete todos */}
+          <TodoList />
+
+          {/* List all completed todos */}
+          {completedTodoCount() !== 0 && <CompletedTodoList />}
         </div>
       </div>
     </TodoProvider>
