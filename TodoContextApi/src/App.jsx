@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { TodoProvider } from "./contexts/TodoContext";
-import { CompletedTodoList, TodoForm, TodoList } from "./components";
+import { CompletedTodoList, TodoForm, TodoList, TrashList } from "./components";
 import { TrashProvider } from "./contexts/TrashContext";
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
 
   const deleteTodo = (id) => {
     const todo = todos.filter((item) => item.id === id);
-    addToTrash(todo);
+    addToTrash(todo[0]);
     setTodos((prev) => prev.filter((item) => item.id !== id));
   };
 
@@ -41,8 +41,8 @@ function App() {
   };
 
   const retrieveFromTrash = (id) => {
-    const todo = todos.filter((item) => item.id === id);
-    updateTodo(todo.id, todo);
+    const todo = trashTodos.filter((item) => item.id === id);
+    setTodos((prev) => [todo[0], ...prev]);
     setTrashTodos((prev) => prev.filter((item) => item.id !== id));
   };
 
@@ -74,18 +74,18 @@ function App() {
   }, [todos, trashTodos]);
 
   return (
-    <TrashProvider
-      value={{ trashTodos, addToTrash, retrieveFromTrash, deleteFromTrash }}
+    <TodoProvider
+      value={{
+        todos,
+        addTodo,
+        updateTodo,
+        deleteTodo,
+        toggleComplete,
+        completedTodoCount,
+      }}
     >
-      <TodoProvider
-        value={{
-          todos,
-          addTodo,
-          updateTodo,
-          deleteTodo,
-          toggleComplete,
-          completedTodoCount,
-        }}
+      <TrashProvider
+        value={{ trashTodos, addToTrash, retrieveFromTrash, deleteFromTrash }}
       >
         <div className="bg-[#172842] min-h-screen py-8">
           <div className="w-full max-w-2xl mx-auto shadow-md rounded-lg px-4 py-3 text-white">
@@ -102,10 +102,13 @@ function App() {
 
             {/* List all completed todos */}
             {completedTodoCount() !== 0 && <CompletedTodoList />}
+
+            {/* List of all trash todos */}
+            {trashTodos.length !== 0 && <TrashList />}
           </div>
         </div>
-      </TodoProvider>
-    </TrashProvider>
+      </TrashProvider>
+    </TodoProvider>
   );
 }
 
