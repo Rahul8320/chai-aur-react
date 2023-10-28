@@ -15,13 +15,12 @@ function TodoItem({ todo }) {
   const handleEditTodo = () => {
     if (todoMsg.trim().length === 0) return;
 
-    todo.todo = todoMsg;
-    updateTodo(todo.id, todo);
+    updateTodo(todo.id, { ...todo, todo: todoMsg });
     setIsTodoEditable(false);
   };
 
-  const handleDeleteTodo = (id) => {
-    deleteTodo(id);
+  const handleDeleteTodo = () => {
+    deleteTodo(todo.id);
   };
 
   return (
@@ -62,7 +61,7 @@ function TodoItem({ todo }) {
       {/* Delete Todo Button */}
       <button
         className="inline-flex w-8 h-8 rounded-lg text-sm border border-black/10 justify-center items-center bg-gray-50 hover:bg-gray-100 shrink-0"
-        onClick={() => handleDeleteTodo(todo.id)}
+        onClick={handleDeleteTodo}
       >
         ❌
       </button>
