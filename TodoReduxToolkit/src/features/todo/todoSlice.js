@@ -21,29 +21,21 @@ export const todoSlice = createSlice({
       state.todos = state.todos.filter((todo) => todo.id !== action.payload);
     },
     updateTodo: (state, action) => {
-      const { todo, id } = action.payload;
-
-      state.todos = state.todos.map((item) => (item.id === id ? todo : item));
-    },
-    toggleComplete: (state, action) => {
-      const { id } = action.payload;
-
       state.todos = state.todos.map((item) =>
-        item.id === id ? { ...item, completed: !item.completed } : item
+        item.id === action.payload.id ? action.payload.todo : item
       );
     },
-    completedTodoCount: (state, action) => {
-      return state.todos.filter((item) => item.completed).length;
+    toggleComplete: (state, action) => {
+      state.todos = state.todos.map((item) =>
+        item.id === action.payload
+          ? { ...item, completed: !item.completed }
+          : item
+      );
     },
   },
 });
 
-export const {
-  addTodo,
-  removeTodo,
-  updateTodo,
-  toggleComplete,
-  completedTodoCount,
-} = todoSlice.actions;
+export const { addTodo, removeTodo, updateTodo, toggleComplete } =
+  todoSlice.actions;
 
 export default todoSlice.reducer;

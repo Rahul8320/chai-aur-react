@@ -9,7 +9,7 @@ import {
 /* eslint-disable react/prop-types */
 function TodoItem({ todo }) {
   const [isTodoEditable, setIsTodoEditable] = useState(false);
-  const [todoMsg, setTodoMsg] = useState(todo.todo);
+  const [todoMsg, setTodoMsg] = useState(todo.title);
 
   const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ function TodoItem({ todo }) {
   const handleEditTodo = () => {
     if (todoMsg.trim().length === 0) return;
 
-    dispatch(updateTodo(todo.id, { ...todo, todo: todoMsg }));
+    dispatch(updateTodo({ id: todo.id, todo: { ...todo, title: todoMsg } }));
     setIsTodoEditable(false);
   };
 

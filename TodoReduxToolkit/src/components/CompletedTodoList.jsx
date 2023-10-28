@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { completedTodoCount } from "../features/todo/todoSlice";
+import { useSelector } from "react-redux";
 import TodoItem from "./TodoItem";
 
 const CompletedTodoList = () => {
@@ -9,15 +8,13 @@ const CompletedTodoList = () => {
 
   const todos = useSelector((state) => state.todos);
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    const todoCount = dispatch(completedTodoCount());
+    const todoCount = todos.filter((item) => item.completed).length;
     setTodoCount(todoCount);
 
     // set expanded false if 3 or more todo is completed
     todoCount >= 3 && setExpanded(false);
-  }, [dispatch]);
+  }, [todos]);
 
   return (
     <div className="flex flex-wrap gap-y-3 mt-5">
