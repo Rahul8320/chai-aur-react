@@ -2,7 +2,7 @@
 import appwriteConfig from "../config/appwrite.config";
 import { Client, Account, ID } from "appwrite";
 
-class AuthService {
+export class AuthService {
   client = new Client();
   account;
 
