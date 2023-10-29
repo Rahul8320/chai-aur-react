@@ -28,7 +28,8 @@ export class PostService {
         }
       );
     } catch (error) {
-      throw error;
+      console.log(`PostService :: createPost :: ${error}`);
+      return null;
     }
   }
 
@@ -41,7 +42,8 @@ export class PostService {
         { title, content, featuredImage, status }
       );
     } catch (error) {
-      throw error;
+      console.log(`PostService :: updatePost :: ${error}`);
+      return null;
     }
   }
 
@@ -54,7 +56,7 @@ export class PostService {
       );
       return true;
     } catch (error) {
-      console.log(error);
+      console.log(`PostService :: deletePost :: ${error}`);
       return false;
     }
   }
@@ -67,8 +69,8 @@ export class PostService {
         slug
       );
     } catch (error) {
-      console.log(error);
-      return false;
+      console.log(`PostService :: getPostById :: ${error}`);
+      return null;
     }
   }
 
@@ -80,8 +82,8 @@ export class PostService {
         queries
       );
     } catch (error) {
-      console.log(error);
-      return false;
+      console.log(`PostService :: getAllPosts :: ${error}`);
+      return null;
     }
   }
 }

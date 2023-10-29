@@ -21,7 +21,7 @@ export class FileService {
         file
       );
     } catch (error) {
-      console.log(error);
+      console.log(`FileService :: uploadFile :: ${error}`);
       return false;
     }
   }
@@ -31,7 +31,7 @@ export class FileService {
       await this.bucket.deleteFile(appwriteConfig.BucketId, fileId);
       return true;
     } catch (error) {
-      console.log(error);
+      console.log(`FileService :: deleteFile :: ${error}`);
       return false;
     }
   }
