@@ -8,6 +8,8 @@ import Input from "./common/Input";
 import Select from "./common/Select";
 import PostCard from "./post/PostCard";
 import Login from "./login/Login";
+import Signup from "./signup/Signup";
+import Protected from "./common/AuthLayout";
 
 export {
   Header,
@@ -20,4 +22,6 @@ export {
   Select,
   PostCard,
   Login,
+  Signup,
+  Protected,
 };
