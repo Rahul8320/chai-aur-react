@@ -22,11 +22,11 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/",
+        path: "",
         element: <HomePage />,
       },
       {
-        path: "/login",
+        path: "login",
         element: (
           <Protected authentication={false}>
             <LoginPage />
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/signup",
+        path: "signup",
         element: (
           <Protected authentication={false}>
             <RegisterPage />
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/all-posts",
+        path: "all-posts",
         element: (
           <Protected authentication>
             <AllPostsPage />
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/add-post",
+        path: "add-post",
         element: (
           <Protected authentication>
             <AddPostPage />
@@ -58,7 +58,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/edit-post/:slug",
+        path: "edit-post/:slug",
         element: (
           <Protected authentication>
             <EditPostPage />
@@ -66,7 +66,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/post/:slug",
+        path: "post/:slug",
         element: <PostPage />,
       },
     ],

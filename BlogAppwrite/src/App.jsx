@@ -51,7 +51,7 @@ function App() {
         <div className="w-full block">
           <Header />
           <main>
-            <h1 className="text-3xl font-bold text-cyan-400">
+            <h1 className="text-3xl font-bold text-cyan-400 text-center my-5">
               A blog app with appwrite
             </h1>
           </main>
